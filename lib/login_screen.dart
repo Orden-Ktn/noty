@@ -1,12 +1,45 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart'; // Assure-toi de créer cette page
+import '../services/auth_service.dart';
+import 'home_screen.dart';
+import 'signup_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _login() async {
+    bool success = await AuthService.login(
+      _usernameController.text,
+      _passwordController.text,
+    );
+
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Connexion réussie !")),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen(username: '',)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Identifiants incorrects")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Connexion',
+        title: Text(
+          'Connexion',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blueAccent,
@@ -32,8 +65,8 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-              // Champ de texte pour le nom d'utilisateur
               TextField(
+                controller: _usernameController,
                 decoration: InputDecoration(
                   labelText: 'Nom d\'utilisateur',
                   labelStyle: TextStyle(color: Colors.blueAccent),
@@ -46,8 +79,8 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // Champ de texte pour le mot de passe
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Mot de passe',
@@ -61,11 +94,8 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-              // Bouton de connexion
               ElevatedButton(
-                onPressed: () {
-                  // Ajouter la logique de connexion ici
-                },
+                onPressed: _login,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   shape: RoundedRectangleBorder(
@@ -79,10 +109,8 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // Texte pour rediriger vers l'inscription
               TextButton(
                 onPressed: () {
-                  // Rediriger vers la page d'inscription
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SignUpScreen()),

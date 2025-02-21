@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:noty/services/database.dart';
 import 'splash_screen.dart'; // Import du Splash Screen
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseService.initialize();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
