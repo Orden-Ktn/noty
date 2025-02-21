@@ -96,10 +96,6 @@ class HomeScreen extends StatelessWidget {
             onSelected: (value) => _onMenuItemSelected(context, value),
             itemBuilder: (context) => [
               PopupMenuItem(
-                value: 'username',
-                child: Text(username),
-              ),
-              PopupMenuItem(
                 value: 'logout',
                 child: Text('Se déconnecter'),
               ),
